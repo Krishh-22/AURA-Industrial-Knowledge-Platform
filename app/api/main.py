@@ -4,12 +4,23 @@ from app.core.logger import logger
 from app.services.upload_service import upload_service
 from app.models.chat import ChatRequest
 from app.services.chat_service import chat_service
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title=settings.app_name,
     version=settings.app_version,
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 async def startup_event():
