@@ -7,4 +7,7 @@ class EmbeddingService:
     def generate_embeddings(self, chunks: list[str]):
         return self.model.encode(chunks).tolist()
     
+    def generate_query_embedding(self, query: str):
+        return self.model.encode(query).tolist()
+    
 embedding_service=EmbeddingService()

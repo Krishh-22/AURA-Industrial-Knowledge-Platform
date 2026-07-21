@@ -24,13 +24,14 @@ class ChromaService:
             embeddings=embeddings,
             metadatas=metadatas,
         )
+    
+    def search_documents(self, query_embedding, top_k=5):
 
-    def search(self, query_embedding, top_k=5):
-        results=self.collection.query(
+        results = self.collection.query(
             query_embeddings=[query_embedding],
             n_results=top_k,
         )
 
-        return results
+        return results["documents"][0]
     
 chroma_service=ChromaService()
