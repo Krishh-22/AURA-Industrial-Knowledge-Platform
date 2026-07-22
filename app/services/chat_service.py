@@ -29,11 +29,17 @@ Document Context:
 
 {context}
 """
-
-        answer = gemini_service.answer_question(
-            context=prompt_context,
-            question=question,
-        )
+        try:
+            answer = gemini_service.answer_question(
+                context=prompt_context,
+                question=question,
+            )   
+        except Exception as e:
+            print(f"Gemini Error: {e}")
+            answer = (
+                "The AI service is temporarily unavailabe because the Gemini API"
+                "is experiencing high demand. Please try again in a few moments."
+            )
 
         self.chat_history.append(f"User: {question}")
         self.chat_history.append(f"Assistant: {answer}")

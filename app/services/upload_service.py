@@ -38,8 +38,13 @@ class UploadService:
             embeddings,
         )
 
-        summary=gemini_service.summarize_document(text)
+        summmary = "Summary unavailable."
 
+        try:
+            summary=gemini_service.summarize_document(text)
+        except Exception as e:
+            print(f"Gemini Error: {e}")
+            
         return {
             "filename": file.filename,
             "message": "File uploaded",
