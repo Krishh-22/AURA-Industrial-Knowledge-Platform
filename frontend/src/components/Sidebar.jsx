@@ -1,4 +1,5 @@
 import { FaFilePdf, FaCloudUploadAlt } from "react-icons/fa";
+import { useState } from "react";
 
 function Sidebar({
   file,
@@ -8,6 +9,31 @@ function Sidebar({
   message,
   summary,
 }) {
+
+  const [dragActive, setDragActive] = useState(false);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragActive(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragActive(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragActive(false);
+
+    const droppedFile = e.dataTransfer.files[0];
+
+    if (droppedFile && droppedFile.type === "application/pdf") {
+      setFile(droppedFile);
+    } else {
+      alert("Please drop a PDF file.");
+    }
+  };
+
   return (
     <div className="w-80 bg-slate-900 border-r border-slate-700 p-6 flex flex-col">
 
@@ -23,18 +49,36 @@ function Sidebar({
 
         <label className="block">
 
-          <div className="border-2 border-dashed border-cyan-500 rounded-xl p-8 text-center cursor-pointer hover:bg-slate-800 transition">
+          <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={`
+              border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-300
+              ${
+                dragActive
+                  ? "border-cyan-300 bg-cyan-500/10 scale-105"
+                  : "border-cyan-500 hover:bg-slate-800"
+              }
+            `}
+          >
 
             <FaCloudUploadAlt
-              className="mx-auto text-5xl text-cyan-400 mb-4"
+              className={`mx-auto text-5xl mb-4 transition ${
+                dragActive
+                  ? "text-cyan-300 scale-110"
+                  : "text-cyan-400"
+              }`}
             />
 
-            <p className="font-semibold">
-              Upload PDF
+            <p className="font-semibold text-white">
+              {dragActive ? "Drop PDF Here" : "Upload PDF"}
             </p>
 
             <p className="text-sm text-slate-400 mt-2">
-              Click to choose file
+              {dragActive
+                ? "Release to upload"
+                : "Drag & Drop or Click to choose"}
             </p>
 
             <input

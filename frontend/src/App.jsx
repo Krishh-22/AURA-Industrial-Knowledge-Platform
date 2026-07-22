@@ -4,6 +4,7 @@ import ChatWindow from "./components/ChatWindow";
 import ChatInput from "./components/ChatInput";
 import api from "./services/api";
 import Header from "./components/Header";
+import jsPDF from "jspdf";
 
 function App() {
 
@@ -91,6 +92,36 @@ function App() {
 
   };
 
+  const downloadChat = () => {
+    const doc = new jsPDF();
+
+    doc.setFont("helvetica");
+    doc.setFontSize(18);
+    doc.text("AURA Chat Conversation", 15, 20);
+
+    let y = 35;
+
+    messages.forEach((msg) => {
+      const role = msg.role === "user" ? "User" : "AURA";
+
+      const lines = doc.splitTextToSize(
+        `${role}: ${msg.text}`,
+        170
+      );
+
+      doc.text(lines, 15, y);
+
+      y += lines.length * 7 + 5;
+
+      if (y > 270) {
+        doc.addPage();
+        y = 20;
+      }
+    });
+
+    doc.save("AURA_Conversation.pdf");
+  };
+
   return (
 
     <div className="h-screen flex bg-slate-950 text-white">
@@ -105,7 +136,7 @@ function App() {
       />
 
       <div className="flex-1 flex flex-col">
-          <Header />
+          <Header downloadChat={downloadChat} />
 
         <ChatWindow
           messages={messages}
