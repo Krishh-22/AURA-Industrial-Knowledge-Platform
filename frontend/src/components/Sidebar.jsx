@@ -6,6 +6,7 @@ function Sidebar({
   uploadPDF,
   loading,
   message,
+  summary,
 }) {
   return (
     <div className="w-80 bg-slate-900 border-r border-slate-700 p-6 flex flex-col">
@@ -94,6 +95,22 @@ function Sidebar({
         <div className="mt-5 text-sm text-green-400">
 
           {message}
+
+        </div>
+
+      )}
+
+      {summary && (
+
+        <div className="mt-6 bg-slate-800 rounded-xl p-4 max-h-64 overflow-y-auto">
+
+          <h3 className="text-cyan-400 font-semibold mb-3">
+            Document Summary
+          </h3>
+
+          <div className="text-sm text-slate-300 whitespace-pre-wrap">
+            {summary}
+          </div>
 
         </div>
 

@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import ChatWindow from "./components/ChatWindow";
 import ChatInput from "./components/ChatInput";
 import api from "./services/api";
+import Header from "./components/Header";
 
 function App() {
 
@@ -10,6 +11,7 @@ function App() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [summary, setSummary] = useState("");
 
   // Upload PDF
   const uploadPDF = async () => {
@@ -25,7 +27,10 @@ function App() {
 
       const res = await api.post("/upload", formData);
 
+      console.log("Upload Response:", res.data);
+
       setMessage(res.data.message || "PDF uploaded successfully.");
+      setSummary(res.data.summary || "");
 
     } catch (err) {
 
@@ -96,9 +101,11 @@ function App() {
         uploadPDF={uploadPDF}
         loading={loading}
         message={message}
+        summary={summary}
       />
 
       <div className="flex-1 flex flex-col">
+          <Header />
 
         <ChatWindow
           messages={messages}

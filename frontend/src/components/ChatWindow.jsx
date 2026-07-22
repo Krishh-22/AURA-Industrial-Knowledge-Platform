@@ -1,6 +1,16 @@
+import { useEffect, useRef } from "react";
 import Message from "./Message";
+import Loader from "./Loader";
 
 function ChatWindow({ messages, loading }) {
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages, loading]);
+
   return (
     <div className="flex-1 overflow-y-auto p-6">
 
@@ -13,24 +23,27 @@ function ChatWindow({ messages, loading }) {
 
           <p className="mt-4 text-slate-400 max-w-xl">
             Upload an industrial document and start asking questions.
-            AURA will answer using only the uploaded PDF.
           </p>
 
         </div>
       ) : (
-        messages.map((msg, index) => (
-          <Message
-            key={index}
-            role={msg.role}
-            text={msg.text}
-          />
-        ))
-      )}
+        <>
+          {messages.map((msg, index) => (
+            <Message
+              key={index}
+              role={msg.role}
+              text={msg.text}
+            />
+          ))}
 
-      {loading && (
-        <div className="text-slate-400 mt-4 animate-pulse">
-          🤖 AURA is thinking...
-        </div>
+          {loading && (
+            <div className="text-cyan-400 animate-pulse">
+              <Loader />
+            </div>
+          )}
+
+          <div ref={bottomRef}></div>
+        </>
       )}
 
     </div>

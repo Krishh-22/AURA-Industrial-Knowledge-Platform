@@ -41,7 +41,7 @@ class UploadService:
         summary=gemini_service.summarize_document(text)
 
         return {
-            "filename": "file.filename",
+            "filename": file.filename,
             "message": "File uploaded",
             "chunks_created": len(chunks),
             "summary": summary,
